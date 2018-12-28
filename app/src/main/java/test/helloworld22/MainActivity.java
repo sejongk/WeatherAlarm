@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<WordItemData> list = new ArrayList<>();
-    TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         ParseTask pT = new ParseTask();
         pT.execute();
 
-        //TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText("Tab 1"));
         tabs.addTab(tabs.newTab().setText("Tab 2"));
         tabs.addTab(tabs.newTab().setText("Tab 3"));
