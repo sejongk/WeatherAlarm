@@ -36,7 +36,7 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.Holder
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         // 각 위치에 문자열 세팅
-        int itemposition = position;
+        final int itemposition = position;
         holder.noText.setText(list.get(itemposition).no);
         holder.nameText.setText(list.get(itemposition).name);
         holder.phoneText.setText(list.get(itemposition).phone);
@@ -55,13 +55,9 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.Holder
         public TextView noText;
         public TextView nameText;
         public TextView phoneText;
-
         public Holder(View view){
             super(view);
-            noText = (TextView) view.findViewById(R.id.noText);
             nameText = (TextView) view.findViewById(R.id.nameText);
-            phoneText = (TextView) view.findViewById(R.id.phoneText);
-
         }
     }
 
