@@ -62,7 +62,8 @@ public class PersonInfo extends AppCompatActivity {
         delPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getContentResolver().delete(ContactsContract.RawContacts.CONTENT_URI, ContactsContract.RawContacts._ID+"=?"+id,null);
+                long tem = id-1;
+                getContentResolver().delete(ContactsContract.RawContacts.CONTENT_URI, ContactsContract.RawContacts._ID+"="+id,null);
                 Intent intent = new Intent(PersonInfo.this, MainActivity.class);
                 startActivity(intent);
             }
