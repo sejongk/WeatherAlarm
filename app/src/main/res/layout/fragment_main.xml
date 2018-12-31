@@ -5,28 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="test.helloworld22.MainActivity">
-<Button
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/PlusPerson"
-    android:text="연락처 추가"/>
 
-    <View
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="16dp"
-        android:layout_centerInParent="true"
-        android:background="#e3e3e3"/>
+        android:layout_height="wrap_content">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:background="@android:color/background_light">
+        </android.support.v7.widget.RecyclerView>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/plusPerson"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:background="@android:color/background_light">
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="145dp"
+        android:layout_marginRight="145dp"
+        android:layout_marginBottom="6dp"
+        android:text="연락처 추가" />
 
-    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
+
 
 

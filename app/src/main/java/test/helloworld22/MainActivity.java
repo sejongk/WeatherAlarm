@@ -1,38 +1,52 @@
 package test.helloworld22;
 
-import android.os.AsyncTask;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<WordItemData> list = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (ContextCompat.checkSelfPermission(this,
+                ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        ParseTask pT = new ParseTask();
-        pT.execute();
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale( this,
+                    ACCESS_FINE_LOCATION)) {
 
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,new String[]{ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText("Tab 1"));
         tabs.addTab(tabs.newTab().setText("Tab 2"));
@@ -48,64 +62,9 @@ public class MainActivity extends AppCompatActivity {
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
     }
-    private  class ParseTask extends AsyncTask<Void, Void, String> {
-
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        String resultJson = "";
-
-        @Override
-        protected String doInBackground(Void... params) {
-            try {
-                String $url_json = "https://raw.githubusercontent.com/Euicheon/CS496_Project_01/master/contact.json";
-                URL url = new URL($url_json);
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line);
-                }
-
-                resultJson = buffer.toString();
-                Log.d("FOR_LOG", resultJson);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return resultJson;
-        }
+}
 
 
-        protected void onPostExecute(String strJson) {
-            super.onPostExecute(strJson);
-
-            try {
-                JSONObject json = new JSONObject(strJson);
-                JSONArray jArray = json.getJSONArray("contact");
-                for (int i = 0; i < jArray.length(); i++) {
-                    JSONObject friend = jArray.getJSONObject(i);
-                    String user_no = friend.getString("name");
-                    String user_name = friend.getString("email");
-                    String user_phone = friend.getString("phone number");
-                    Log.d("FOR_LOG", user_no);
-                    Log.d("FOR_LOG", user_name);
-                    Log.d("FOR_LOG", user_phone);
-                    list.add(new WordItemData(user_no,user_name,user_phone));
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
     class MyPagerAdapter extends FragmentPagerAdapter {
         int mNumOfTabs; //tab의 갯수
 
@@ -120,13 +79,14 @@ public class MainActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     MainFragment tab1 = new MainFragment();
-                    tab1.list = list;
                     return tab1;
                 case 1:
                     Gallery tab2 = new Gallery();
                     return tab2;
                 case 2:
-                    FreeTab tab3 = new FreeTab();
+                    //FreeTab tab3 = new FreeTab();
+                   // return tab3;
+                    WeatherAlarm tab3 = new WeatherAlarm();
                     return tab3;
                 default:
                     return null;
@@ -141,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-}
+
 
 
 
