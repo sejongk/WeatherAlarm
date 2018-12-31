@@ -58,15 +58,15 @@ public double longitude;
     public void run(){
         //핸들러로 보낼 Message 작성
         //반복적으로 수행할 작업을 한다.
-        while(isRun){
+        while(isRun) {
             // 0 맑음, 1 비, 2 눈
             Message msg0 = new Message();
             Bundle data0 = new Bundle();
-            data0.putInt("state",0);
+            data0.putInt("state", 0);
             msg0.setData(data0);
             Message msg1 = new Message();
             Bundle data1 = new Bundle();
-            data1.putInt("state",1);
+            data1.putInt("state", 1);
             msg1.setData(data1);
             Message msg2 = new Message();
             Bundle data2 = new Bundle();
@@ -80,28 +80,30 @@ public double longitude;
             ParseTask pT = new ParseTask();
             pT.execute();
             handler.sendEmptyMessage(0);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
-            if(chg_cold==true) {
-                Log.e("low tem","lowlow");
-                handler.sendMessage(msg3);
+            if (longitude != 0 && latitude != 0) {
+                if (chg_cold == true) {
+                    Log.e("low tem", "lowlow");
+                    handler.sendMessage(msg3);
 
-            }
-            if(chg_rain == true)   handler.sendMessage(msg1);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
-            if(chg_snow == true) {
-                handler.sendMessage(msg2);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
-            }
-            if(term>0) {
-                try {
-                    Thread.sleep(100000); //10초씩 쉰다.
-                } catch (Exception e) {
                 }
-            }
-            else{
-                try {
-                    Thread.sleep(5000); //10초씩 쉰다.
-                } catch (Exception e) {
+                if (chg_rain == true)
+                    handler.sendMessage(msg1);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
+                if (chg_snow == true) {
+                    handler.sendMessage(msg2);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
                 }
+                if (term > 0) {
+                    try {
+                        Thread.sleep(100000); //10초씩 쉰다.
+                    } catch (Exception e) {
+                    }
+                } else {
+                    try {
+                        Thread.sleep(5000); //10초씩 쉰다.
+                    } catch (Exception e) {
+                    }
+                }
+                term++;
             }
-            term++;
         }
     }
 
