@@ -88,7 +88,7 @@ public void getInfo(){
     @Override
     public void onResume(){
     super.onResume();
-
+    getInfo();
     }
     @Override
     public void onCreate(Bundle savedInstanceState){
