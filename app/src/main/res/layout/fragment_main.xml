@@ -35,12 +35,12 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="76dp"
-        android:layout_marginRight="76dp"
-        android:layout_marginBottom="57dp"
-        android:textColor="#16193B"
-        android:background="@drawable/rounded_button"
-        android:text="Add" />
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/rounded_button_2"
+        android:text="Add"
+        android:textColor="#16193B" />
 
 
 </RelativeLayout>

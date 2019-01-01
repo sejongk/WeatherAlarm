@@ -18,7 +18,7 @@
             android:id="@+id/getName1"
 
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/colorAccent"
+            android:textColor="#16193B"
             android:layout_width="wrap_content"
             android:layout_height="100dp" />
 
@@ -47,6 +47,7 @@
             android:id="@+id/sendCall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button_2"
             android:layout_marginTop="8dp"
             android:text="Call"
             app:layout_constraintTop_toBottomOf="@+id/sendMessage"
@@ -55,6 +56,7 @@
         <Button
             android:id="@+id/sendMessage"
             android:layout_width="match_parent"
+            android:background="@drawable/rounded_button_2"
             android:layout_height="44dp"
             android:layout_marginTop="180dp"
             android:text="Message"
