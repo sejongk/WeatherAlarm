@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <application
@@ -21,11 +20,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".FullImage"
@@ -41,8 +35,15 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".PlusPerson"></activity>
+        <activity android:name=".PlusPerson" ></activity>
+        <activity
+            android:name=".getPermission"
+            android:label="@string/title_activity_get_permission"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
     </application>
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
 </manifest>
