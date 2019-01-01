@@ -29,8 +29,8 @@ import java.util.Locale;
 
 public class MyService extends Service {
     NotificationManager Notifi_M;
-  //  public double pre_longi;
-  //  public double pre_lati;
+    public int pre_longi;
+    public int pre_lati;
     public double longitude;
     public double latitude;
 
@@ -96,48 +96,49 @@ public class MyService extends Service {
 
     private final LocationListener mLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-          //  pre_lati = latitude;
-         //   pre_longi =longitude;
+            pre_lati = (int)(latitude*100);
+            pre_longi =(int)(longitude*100);
 
             longitude = location.getLongitude(); //경도
             latitude = location.getLatitude();   //위도
-            Log.e("gpsFlag","좌표가 바뀌었음"+longitude);
+            if(pre_longi != (int)(longitude*100)&& pre_lati !=(int)(latitude*100)) {
+                Log.e("gpsFlag", "좌표가 바뀌었음" + longitude);
 
-            Geocoder mGeoCoder = new Geocoder(getApplicationContext(), Locale.KOREA);
-            String sb = new String();
-            try {
-                List<Address> addrs =
-                        mGeoCoder.getFromLocation(latitude, longitude, 1);
+                Geocoder mGeoCoder = new Geocoder(getApplicationContext(), Locale.KOREA);
+                String sb = new String();
+                try {
+                    List<Address> addrs =
+                            mGeoCoder.getFromLocation(latitude, longitude, 1);
 
-                for (Address addr : addrs) {
-                    // 지명을 검색하고 문자열에 연결
-                    int index = addr.getMaxAddressLineIndex();
-                    for (int i = 0; i <= index; ++i) {
-                        sb=addr.getThoroughfare();
-                        Log.e("location",addr.getThoroughfare());
+                    for (Address addr : addrs) {
+                        // 지명을 검색하고 문자열에 연결
+                        int index = addr.getMaxAddressLineIndex();
+                        for (int i = 0; i <= index; ++i) {
+                            sb = addr.getThoroughfare();
+                            Log.e("location", addr.getThoroughfare());
+                        }
                     }
+                } catch (IOException e) {
                 }
-            } catch (IOException e) {
-            }
-            if(!sb.equals(currnetLoc)){
-                    if(thread != null) thread.stopForever();
+                if (!sb.equals(currnetLoc)) {
+                    if (thread != null) thread.stopForever();
                     currnetLoc = sb;
                     thread = new ServiceThread(handler, longitude, latitude);
                     Log.e("flag", "도시가 바뀌었습니다.");
                     thread.start();
+                } else {
+                    Log.e("flag", "위치는 바뀌었으나 도시는 그대로네요");
+
                 }
-                else{
-                Log.e("flag", "위치는 바뀌었으나 도시는 그대로네요");
 
+                //여기서 위치값이 갱신되면 이벤트가 발생한다.
+                //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
+                Log.d("test", "onLocationChanged, location:" + location);
+
+                //Gps 위치제공자에 의한 위치변화. 오차범위가 좁다.
+                //Network 위치제공자에 의한 위치변화
+                //Network 위치는 Gps에 비해 정확도가 많이 떨어진다.
             }
-
-            //여기서 위치값이 갱신되면 이벤트가 발생한다.
-            //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
-            Log.d("test", "onLocationChanged, location:" + location);
-
-            //Gps 위치제공자에 의한 위치변화. 오차범위가 좁다.
-            //Network 위치제공자에 의한 위치변화
-            //Network 위치는 Gps에 비해 정확도가 많이 떨어진다.
         }
         public void onProviderDisabled(String provider) {
             // Disabled시
