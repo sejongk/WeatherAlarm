@@ -1,11 +1,5 @@
 package test.helloworld22;
 
-import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,13 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Locale;
 
 public class ServiceThread extends Thread {
     int[] rain = {500, 501, 502, 503, 504, 511, 520, 521, 522, 531};
@@ -46,30 +37,16 @@ public class ServiceThread extends Thread {
     public double longitude;
     public double latitude;
 
-    public int pre_lati;
-    public int pre_longi;
     int term = 0;
 
     Handler handler;
-    Context context;
     boolean isRun = true;
 
-    String currnetLoc = new String();
 
-    public ServiceThread(Context context,Handler handler, double longitude, double latitude) {
+    public ServiceThread(Handler handler, double longitude, double latitude) {
         this.handler = handler;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.context = context;
-        final LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
-                100, // 통지사이의 최소 시간간격 (miliSecond)
-                1, // 통지사이의 최소 변경거리 (m)
-                mLocationListener);
-        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자
-                100, // 통지사이의 최소 시간간격 (miliSecond)
-                1, // 통지사이의 최소 변경거리 (m)
-                mLocationListener);
     }
 
     public void stopForever() {
@@ -97,64 +74,6 @@ public class ServiceThread extends Thread {
 
         }
     }
-
-    private final LocationListener mLocationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            pre_lati = (int)(latitude*100);
-            pre_longi =(int)(longitude*100);
-
-            longitude = location.getLongitude(); //경도
-            latitude = location.getLatitude();   //위도
-            if(pre_longi != (int)(longitude*100)&& pre_lati !=(int)(latitude*100)) {
-                Log.e("gpsFlag", "좌표가 바뀌었음" + longitude);
-
-                Geocoder mGeoCoder = new Geocoder(context,Locale.KOREA);
-                String sb = new String();
-                try {
-                    List<Address> addrs =
-                            mGeoCoder.getFromLocation(latitude, longitude, 1);
-
-                    for (Address addr : addrs) {
-                        // 지명을 검색하고 문자열에 연결
-                        int index = addr.getMaxAddressLineIndex();
-                        for (int i = 0; i <= index; ++i) {
-                            sb = addr.getThoroughfare();
-                            Log.e("location", addr.getThoroughfare());
-                        }
-                    }
-                } catch (IOException e) {
-                }
-                if (!sb.equals(currnetLoc)) {
-                    currnetLoc = sb;
-                    Log.e("flag", "도시가 바뀌었습니다.");
-                } else {
-                    Log.e("flag", "위치는 바뀌었으나 도시는 그대로네요");
-                    longitude = pre_longi;
-                    latitude = pre_lati;
-                }
-
-                //여기서 위치값이 갱신되면 이벤트가 발생한다.
-                //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
-                Log.d("test", "onLocationChanged, location:" + location);
-
-                //Gps 위치제공자에 의한 위치변화. 오차범위가 좁다.
-                //Network 위치제공자에 의한 위치변화
-                //Network 위치는 Gps에 비해 정확도가 많이 떨어진다.
-            }
-        }
-        public void onProviderDisabled(String provider) {
-            // Disabled시
-            Log.d("test", "onProviderDisabled, provider:" + provider);
-        }
-        public void onProviderEnabled(String provider) {
-            // Enabled시
-            Log.d("test", "onProviderEnabled, provider:" + provider);
-        }
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            // 변경시
-            Log.d("test", "onStatusChanged, provider:" + provider + ", status:" + status + " ,Bundle:" + extras);
-        }
-    };
 
     private class ParseTask extends AsyncTask<Void, Void, String> {
 
@@ -232,7 +151,7 @@ public class ServiceThread extends Thread {
                 if (pre_snow == false && cur_snow == true) chg_snow = true;
                 else chg_snow = false;
 
-                if (tem <= 0) {
+                if (tem > 0) {
                     cur_cold = true;
                 } else cur_cold = false;
 

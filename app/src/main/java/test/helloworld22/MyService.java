@@ -9,6 +9,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +21,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 public class MyService extends Service {
@@ -55,13 +64,23 @@ public class MyService extends Service {
     public void onCreate(){
         handler= new myServiceHandler();
         Notifi_M = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        thread = new ServiceThread(getApplicationContext(),handler, longitude, latitude);
-        thread.start();
+        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
+                100, // 통지사이의 최소 시간간격 (miliSecond)
+                1, // 통지사이의 최소 변경거리 (m)
+                mLocationListener);
+        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자
+                100, // 통지사이의 최소 시간간격 (miliSecond)
+                1, // 통지사이의 최소 변경거리 (m)
+                mLocationListener);
+      //  thread = new ServiceThread(handler, longitude, latitude);
+        // thread.start();
 
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Notifi_M = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        thread = new ServiceThread(handler, longitude, latitude);
         return START_STICKY;
     }
 
@@ -71,10 +90,74 @@ public class MyService extends Service {
         if(thread != null) {
             thread.stopForever();
             thread = null;//쓰레기 값을 만들어서 빠르게 회수하라고 null을 넣어줌.
+            System.gc();
         }
         super.onDestroy();
     }
 
+    private final LocationListener mLocationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            pre_lati = (int)(latitude*100);
+            pre_longi =(int)(longitude*100);
+
+            longitude = location.getLongitude(); //경도
+            latitude = location.getLatitude();   //위도
+            if(pre_longi != (int)(longitude*100)&& pre_lati !=(int)(latitude*100)) {
+                Log.e("gpsFlag", "좌표가 바뀌었음" + longitude);
+
+                Geocoder mGeoCoder = new Geocoder(getApplicationContext(), Locale.KOREA);
+                String sb = new String();
+                try {
+                    List<Address> addrs =
+                            mGeoCoder.getFromLocation(latitude, longitude, 1);
+
+                    for (Address addr : addrs) {
+                        // 지명을 검색하고 문자열에 연결
+                        int index = addr.getMaxAddressLineIndex();
+                        for (int i = 0; i <= index; ++i) {
+                            sb = addr.getThoroughfare();
+                            Log.e("location", addr.getThoroughfare());
+                        }
+                    }
+                } catch (IOException e) {
+                }
+                if (!sb.equals(currnetLoc)) {
+                    if (thread != null) {
+                        thread.stopForever();
+                        thread = null;
+                        System.gc();
+                    }
+                    currnetLoc = sb;
+                    thread = new ServiceThread(handler, longitude, latitude);
+                    Log.e("flag", "도시가 바뀌었습니다.");
+                    thread.start();
+                } else {
+                    Log.e("flag", "위치는 바뀌었으나 도시는 그대로네요");
+
+                }
+
+                //여기서 위치값이 갱신되면 이벤트가 발생한다.
+                //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
+                Log.d("test", "onLocationChanged, location:" + location);
+
+                //Gps 위치제공자에 의한 위치변화. 오차범위가 좁다.
+                //Network 위치제공자에 의한 위치변화
+                //Network 위치는 Gps에 비해 정확도가 많이 떨어진다.
+            }
+        }
+        public void onProviderDisabled(String provider) {
+            // Disabled시
+            Log.d("test", "onProviderDisabled, provider:" + provider);
+        }
+        public void onProviderEnabled(String provider) {
+            // Enabled시
+            Log.d("test", "onProviderEnabled, provider:" + provider);
+        }
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            // 변경시
+            Log.d("test", "onStatusChanged, provider:" + provider + ", status:" + status + " ,Bundle:" + extras);
+        }
+    };
 
 
     class myServiceHandler extends Handler {
