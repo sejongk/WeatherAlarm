@@ -6,5 +6,5 @@
     <string name="title_activity_person_info">PersonInfo</string>
     <string name="title_activity_full_image">FullImage</string>
     <string name="title_activity_get_permission">getPermission</string>
-    <string name="welcome">환영합니다</string>
+    <string name="welcome">"        시작 >        "</string>
 </resources>
