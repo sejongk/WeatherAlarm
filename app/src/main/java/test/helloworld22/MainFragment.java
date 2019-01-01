@@ -65,10 +65,12 @@ public class MainFragment extends Fragment {
         plusPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(getActivity(),PlusPerson.class);
+          //     Intent intent = new Intent(getActivity(),PlusPerson.class);
             //    Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
+            //    startActivity(intent);
+                Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
                 startActivity(intent);
-            }
+                }
         } );
         return rootView;
     }
@@ -153,7 +155,7 @@ public class MainFragment extends Fragment {
         };
         String[] selectionArgs = null;
         String sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + ", " + ContactsContract.CommonDataKinds.Email.DATA+" COLLATE LOCALIZED ASC";
-        Cursor cursor = getContext().getContentResolver().query(uri,projection,null,selectionArgs,sortOrder);
+        Cursor cursor = getContext().getContentResolver().query(uri,projection,null,selectionArgs,ContactsContract.Contacts.SORT_KEY_PRIMARY);
         LinkedHashSet<ContactItem> hashlist = new LinkedHashSet<>();
         if(cursor.moveToFirst()){
             do{
