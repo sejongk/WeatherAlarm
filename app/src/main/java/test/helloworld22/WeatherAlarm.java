@@ -41,9 +41,9 @@ public class WeatherAlarm extends Fragment {
     int[] rain = {500,501,502,503,504,511,520,521,522,531};
     int[] snow = {600,601,602,611,612,615,616,620,621,622};
     int fog = 741;
-    TextView descriptionText;
+
     TextView tempText;
-    TextView speedText;
+
 
     //gps 설치
     private final LocationListener mLocationListener = new LocationListener() {
@@ -110,9 +110,9 @@ public void getInfo(){
                 1, // 통지사이의 최소 변경거리 (m)
                 mLocationListener);
 
-        descriptionText=rootView.findViewById(R.id.description);
+
         tempText=rootView.findViewById(R.id.temp);
-        speedText=rootView.findViewById(R.id.speed);
+
         Button btn_start = (Button)rootView.findViewById(R.id.btn_start);
         Button btn_end = (Button)rootView.findViewById(R.id.btn_end);
 
@@ -206,9 +206,9 @@ public void getInfo(){
                 for(int i=0;i<snow.length;i++){ if(id == snow[i]) { snow_state = true; } }
                 if(id == fog) { fog_state = true; }
                 if(latitude != 0 && longitude != 0) {
-                    descriptionText.setText(description);
+             //       descriptionText.setText(description);
                     tempText.setText(Double.toString(tem));
-                    speedText.setText(Double.toString(speed));
+
                 }
 
                 //adapter.notifyDataSetChanged();

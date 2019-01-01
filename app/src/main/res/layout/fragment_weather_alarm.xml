@@ -16,64 +16,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".PersonInfo">
-
+    <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
 
         <TextView
             android:textSize="40dp"
-            android:id="@+id/description"
-
+            android:id="@+id/temp"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/colorAccent"
+            android:textColor="#16193B"
             android:layout_width="wrap_content"
             android:layout_height="100dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
-
-            <TextView
-                android:text="온도 :"
-                android:gravity="right"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/temp"
-                android:gravity="right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
 
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
-
-            <TextView
-                android:text="풍속 :"
-                android:gravity="right"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/speed"
-                android:gravity="right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-
-        </LinearLayout>
 <Button
-    android:text="알람 시작"
+    android:text="On"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:background="@drawable/rounded_button"
+    android:textColor="#16193B"
     android:id = "@+id/btn_start"/>
         <Button
-            android:text="알람 종료"
+            android:text="Off"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:background="@drawable/rounded_button"
+            android:textColor="#16193B"
             android:id = "@+id/btn_end"/>
 
 

@@ -2,15 +2,12 @@ package test.helloworld22;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,9 +20,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.READ_CONTACTS;
 
 
 public class MainFragment extends Fragment {
@@ -59,7 +53,7 @@ public class MainFragment extends Fragment {
         final ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_main, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        Button plusPerson = rootView.findViewById(R.id.plusPerson);
+        Button plusPerson = (Button)rootView.findViewById(R.id.plusPerson);
         // list = WordItemData.createContactsList(50);
         recyclerView.setHasFixedSize(true);
         adapter = new MainViewAdapter(getActivity(), list);
@@ -114,7 +108,7 @@ public class MainFragment extends Fragment {
                     String name = list.get(itemposition).user_Name;
                     String phone = list.get(itemposition).user_phNumber;
                     String email = list.get(itemposition).user_Email;
-                    Intent intent = new Intent(getActivity(),PersonInfo.class);
+                    Intent intent = new Intent(getActivity(),PersonInfo2.class);
                     intent.putExtra("id",id);
                     intent.putExtra("name",name);
                     intent.putExtra("phone",phone);

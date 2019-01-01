@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="top"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border"
+    tools:context=".PersonInfo">
+
+    <TextView
+        android:text="이름"
+        android:textSize="40dp"
+        android:id="@+id/getName1"
+
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:text="이름 :"
+            android:gravity="right"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/getName2"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:text="이메일 :"
+            android:gravity="right"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/getEmail"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:text="휴대폰 :"
+            android:gravity="right"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/getPhone"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sendCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전화"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="437dp" />
+
+    <Button
+        android:id="@+id/sendMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="메세지"
+        tools:layout_editor_absoluteX="113dp"
+        tools:layout_editor_absoluteY="437dp" />
+
+    <Button
+        android:id="@+id/delPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="삭제"
+        tools:layout_editor_absoluteX="113dp"
+        tools:layout_editor_absoluteY="437dp" />
+</LinearLayout>

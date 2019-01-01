@@ -4,18 +4,22 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
-        android:gravity="center"
+        android:gravity="top"
         android:padding="16dp"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EFC94C"
+        android:background="@drawable/border"
         tools:context=".PlusPerson">
 
         <TextView
-            android:text="연락처 등록하기"
+            android:text="연락처 등록"
             android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginTop="80dp"
+            android:height="80dp"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/colorAccent"
+            android:textColor="#35478C"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -27,8 +31,9 @@
 
             <TextView
                 android:text="이름 :"
-                android:gravity="right"
-                android:layout_width="50dp"
+                android:gravity="left"
+                android:layout_width="70dp"
+                android:textColor="#35478C"
                 android:layout_height="wrap_content" />
 
             <EditText
@@ -45,7 +50,8 @@
 
         <TextView
             android:text="휴대전화 :"
-            android:gravity="right"
+            android:gravity="left"
+            android:textColor="#35478C"
             android:layout_width="70dp"
             android:layout_height="wrap_content" />
 
@@ -64,8 +70,9 @@
 
             <TextView
                 android:text="이메일 :"
-                android:gravity="right"
-                android:layout_width="50dp"
+                android:gravity="left"
+                android:textColor="#35478C"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content" />
 
             <EditText
@@ -78,8 +85,11 @@
 
         <Button
             android:id="@+id/plus_ok"
-            android:text="입력완료"
+            android:textColor="#16193B"
+            android:text="Add"
             android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_button"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
