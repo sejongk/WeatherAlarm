@@ -105,7 +105,7 @@ public class MyService extends Service {
             if(pre_longi != (int)(longitude*100)&& pre_lati !=(int)(latitude*100)) {
                 Log.e("gpsFlag", "좌표가 바뀌었음" + longitude);
 
-                Geocoder mGeoCoder = new Geocoder(getApplicationContext(), Locale.KOREA);
+                Geocoder mGeoCoder = new Geocoder(getApplicationContext());
                 String sb = new String();
                 try {
                     List<Address> addrs =
