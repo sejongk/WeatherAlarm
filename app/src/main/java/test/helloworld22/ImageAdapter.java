@@ -22,7 +22,7 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
     //ArrayList<String> f = new ArrayList<String>();// list of file paths
     public ArrayList<Bitmap> mThumbIds = new ArrayList<>();
     public Bitmap[] mThumb;
-
+    public BitmapFactory.Options options = new BitmapFactory.Options();
     private File[] listFile;
 
     public ImageAdapter(Context c) {
@@ -32,13 +32,13 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
         File directory= new File("/storage/emulated/0/DCIM/Camera");
         Log.d("fileDirectory : ",Environment.getDataDirectory()+"/DCIM/Camera");
         listFile = directory.listFiles();
-
+        options.inSampleSize = 4;
 
         for (int i = 0; i < listFile.length; i++)
         {
 
             if(listFile[i].getName().endsWith(".jpg")) {//Log.d("Files", "FileName:" + listFile[i].getAbsolutePath());
-                bm = BitmapFactory.decodeFile(listFile[i].getAbsolutePath());
+                bm = BitmapFactory.decodeFile(listFile[i].getAbsolutePath(),options);
                 mThumbIds.add(bm);
             }
 
@@ -49,7 +49,7 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
     }
 
     public int getCount() {
-        return listFile.length;
+        return mThumbIds.size();
     }
 
     public Object getItem(int position) {
@@ -65,7 +65,7 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
         ImageView imageView;
         if (convertView == null) { // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setLayoutParams(new GridView.LayoutParams(350, 350));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {
@@ -73,7 +73,7 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
         }
         Log.e("Frag", "position :"+position);
         Log.e("Frag", "mthumb :"+mThumb.length);
-        if( mThumb.length > position ) {
+        if( mThumbIds.size() > position ) {
             imageView.setImageBitmap(mThumb[position]);
         }
         Log.e("Frag", "Test is running");
