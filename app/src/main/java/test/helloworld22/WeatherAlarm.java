@@ -42,9 +42,10 @@ public class WeatherAlarm extends Fragment {
     int[] rain = {500,501,502,503,504,511,520,521,522,531,300,301,302,310,311,312,313,314,321};
     int[] snow = {600,601,602,611,612,615,616,620,621,622};
     int[] thunder ={200,201,202,210,211,212,221,230,231,232};
-    int[] fewcloud={801,802};
+    int[] fewcloud={801,802,701,711,721,741};
+    int[] winds ={771,781};
+    int[] dust = {731,751,761,762};
     int[] manycloud={803,804};
-    int fog = 741;
 
     TextView tempText;
     ImageView weather;
@@ -227,6 +228,9 @@ public void getInfo(){
                     } }
                     for(int i=0;i<thunder.length;i++){ if(id == thunder[i]) {
                         weather.setImageResource(R.drawable.rainbolt);
+                    } }
+                    for(int i=0;i<winds.length;i++){ if(id == winds[i]) {
+                        weather.setImageResource(R.drawable.wind);
                     } }
                 }
 
