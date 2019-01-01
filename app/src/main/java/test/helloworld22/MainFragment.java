@@ -35,9 +35,13 @@ public class MainFragment extends Fragment {
      }
     @Override
     public void onStart(){
-        super.onStart();
         list = getContactList();
         adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+        super.onStart();
+
     }
 
 
