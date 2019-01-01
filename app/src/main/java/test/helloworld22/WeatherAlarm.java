@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,11 +39,15 @@ public class WeatherAlarm extends Fragment {
     public double latitude;
     String description;
 
-    int[] rain = {500,501,502,503,504,511,520,521,522,531};
+    int[] rain = {500,501,502,503,504,511,520,521,522,531,300,301,302,310,311,312,313,314,321};
     int[] snow = {600,601,602,611,612,615,616,620,621,622};
+    int[] thunder ={200,201,202,210,211,212,221,230,231,232};
+    int[] fewcloud={801,802};
+    int[] manycloud={803,804};
     int fog = 741;
 
     TextView tempText;
+    ImageView weather;
 
 
     //gps 설치
@@ -92,6 +97,8 @@ public void getInfo(){
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Intent intent = new Intent(getActivity(),MyService.class);
+        getActivity().bindService(intent,conn,Context.BIND_AUTO_CREATE);
 }
 
 
@@ -110,7 +117,7 @@ public void getInfo(){
                 1, // 통지사이의 최소 변경거리 (m)
                 mLocationListener);
 
-
+        weather=rootView.findViewById(R.id.weather);
         tempText=rootView.findViewById(R.id.temp);
 
         Button btn_start = (Button)rootView.findViewById(R.id.btn_start);
@@ -120,8 +127,7 @@ public void getInfo(){
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"Service 시작",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(),MyService.class);
-                getActivity().bindService(intent,conn,Context.BIND_AUTO_CREATE);
+
             }
         });
 
@@ -184,7 +190,6 @@ public void getInfo(){
             super.onPostExecute(strJson);
             boolean rain_state=false;
             boolean snow_state=false;
-            boolean fog_state=false;
 
             try {
                 JSONObject json = new JSONObject(strJson);
@@ -202,13 +207,27 @@ public void getInfo(){
                 //wind speed
                 Double speed = windOb.getDouble("speed");
                 //rain snow fog 판별
-                for(int i=0;i<rain.length;i++){ if(id == rain[i]) { rain_state = true; } }
-                for(int i=0;i<snow.length;i++){ if(id == snow[i]) { snow_state = true; } }
-                if(id == fog) { fog_state = true; }
-                if(latitude != 0 && longitude != 0) {
-             //       descriptionText.setText(description);
-                    tempText.setText(Double.toString(tem));
 
+                if(latitude != 0 && longitude != 0) {
+                    tempText.setText(Double.toString(tem));
+                    for(int i=0;i<rain.length;i++){ if(id == rain[i]) {
+                        rain_state = true;
+                        weather.setImageResource(R.drawable.rain);
+                    } }
+                    for(int i=0;i<snow.length;i++){ if(id == snow[i]) {
+                        snow_state = true;
+                        weather.setImageResource(R.drawable.snow);
+                    } }
+                  if(id==800)  weather.setImageResource(R.drawable.sunny);
+                    for(int i=0;i<fewcloud.length;i++){ if(id == fewcloud[i]) {
+                        weather.setImageResource(R.drawable.cloudy);
+                    } }
+                    for(int i=0;i<manycloud.length;i++){ if(id == manycloud[i]) {
+                        weather.setImageResource(R.drawable.cloud);
+                    } }
+                    for(int i=0;i<thunder.length;i++){ if(id == thunder[i]) {
+                        weather.setImageResource(R.drawable.rainbolt);
+                    } }
                 }
 
                 //adapter.notifyDataSetChanged();
