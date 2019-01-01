@@ -67,16 +67,136 @@ public double longitude;
 
                 ParseTask pT = new ParseTask();
                 pT.execute();
+           // parsing();
 
                 handler.sendEmptyMessage(0);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
 
                      try{
-                         Thread.sleep(50000); //10초씩 쉰다.
+                         Thread.sleep(1800000); //10초씩 쉰다.
                      } catch (Exception e) {}
 
         }
     }
+    private void parsing(){
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        String resultJson = "";
+        try {
+            String url1 = "https://api.openweathermap.org/data/2.5/weather?&APPID=4b68d3c0176ef8dc98a91decba2ef3ed&lang=kr&units=metic&";
+            String url2 = "lat="+latitude+"&lon="+longitude;
+            String $url_json = url1+url2;
+            URL url = new URL($url_json);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+            InputStream inputStream = urlConnection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
 
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+            resultJson = buffer.toString();
+            Log.d("FOR_LOG", resultJson);
+
+            JSONObject json = new JSONObject(resultJson);
+            JSONArray weatherArr = json.getJSONArray("weather");
+            JSONObject mainOb = json.getJSONObject("main");
+            JSONObject windOb = json.getJSONObject("wind");
+            //description, id
+            JSONObject friend = weatherArr.getJSONObject(0);
+            id = friend.getInt("id");
+            description = friend.getString("description");
+            Log.d("FOR_LOG", description);
+
+            //temp
+            tem = Math.floor(mainOb.getDouble("temp")-273.15);
+            Log.e("temperature",Double.toString(tem));
+            //wind speed
+            speed = windOb.getDouble("speed");
+
+            pre_rain = cur_rain;
+            pre_snow = cur_snow;
+            pre_cold = cur_cold;
+
+            for(int i=0;i<rain.length;i++){
+                if( id == rain[i]) {
+                    cur_rain = true;
+                    break;
+                }
+                else if(i==rain.length-1) cur_rain = false;
+            }
+            if(pre_rain ==false  && cur_rain == true) chg_rain = true;
+            else chg_rain = false;
+
+            for(int i=0;i<snow.length;i++){
+                if(id == snow[i]) {
+                    cur_snow = true;
+                    break;
+                }
+                else if(i==snow.length-1) cur_snow = false;
+            }
+            if(pre_snow==false  && cur_snow == true) chg_snow = true;
+            else chg_snow = false;
+
+            if(tem<0) {
+                cur_cold = true;
+            }
+            else cur_cold=false;
+
+            if(pre_cold==false  && cur_cold == true) chg_cold = true;
+            else chg_cold = false;
+            //메세지 처리
+            Message msg0 = new Message();
+            Bundle data0 = new Bundle();
+            data0.putInt("state", 0);
+            msg0.setData(data0);
+            Message msg1 = new Message();
+            Bundle data1 = new Bundle();
+            data1.putInt("state", 1);
+            msg1.setData(data1);
+            Message msg2 = new Message();
+            Bundle data2 = new Bundle();
+            data2.putInt("state", 2);
+            msg2.setData(data2);
+            Message msg3 = new Message();
+            Bundle data3 = new Bundle();
+            data3.putInt("state", 3);
+            msg3.setData(data3);
+            Message msg4 = new Message();
+            Bundle data4 = new Bundle();
+            data3.putInt("state", 4);
+            msg3.setData(data4);
+            Message msg5 = new Message();
+            Bundle data5 = new Bundle();
+            data3.putInt("state", 5);
+            msg3.setData(data5);
+
+
+            if (chg_rain&&!chg_cold)
+                handler.sendMessage(msg1);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
+            if (chg_snow&&!chg_cold) {
+                handler.sendMessage(msg2);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
+            }
+            if (chg_cold&&!chg_rain&&!chg_snow) {
+                Log.e("low tem", "lowlow");
+                handler.sendMessage(msg3);
+            }
+            if (chg_rain&&chg_cold)
+                handler.sendMessage(msg1);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
+            if (chg_snow&&chg_cold) {
+                handler.sendMessage(msg2);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
+            }
+            String state = "state는 " + "과거" + pre_cold + "현재" + cur_cold + "변화" + chg_cold;
+            Log.d("state", state);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     private  class ParseTask extends AsyncTask<Void, Void, String> {
 
         HttpURLConnection urlConnection = null;
@@ -180,17 +300,17 @@ public double longitude;
                 Bundle data3 = new Bundle();
                 data3.putInt("state", 3);
                 msg3.setData(data3);
-                if (chg_cold == true) {
-                    Log.e("low tem", "lowlow");
-                    handler.sendMessage(msg3);
-                }
-                if (chg_rain == true)
-                    handler.sendMessage(msg1);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
-                if (chg_snow == true) {
-                    handler.sendMessage(msg2);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
-                }
-                String state = "state는 "+"과거"+pre_cold+"현재"+cur_cold+"변화"+chg_cold;
-                Log.d("state",state);
+                    if (chg_cold == true) {
+                        Log.e("low tem", "lowlow");
+                        handler.sendMessage(msg3);
+                    }
+                    if (chg_rain == true)
+                        handler.sendMessage(msg1);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
+                    if (chg_snow == true) {
+                        handler.sendMessage(msg2);//쓰레드에 있는 핸들러에게 메세지를 보냄            //rain snow fog 판별
+                    }
+                    String state = "state는 " + "과거" + pre_cold + "현재" + cur_cold + "변화" + chg_cold;
+                    Log.d("state", state);
                } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -87,9 +87,11 @@ public class MyService extends Service {
     //서비스가 종료될 때 할 작업
     @Override
     public void onDestroy() {
-        if(thread != null)  thread.stopForever();
+        if(thread != null) {
+            thread.stopForever();
+            thread = null;//쓰레기 값을 만들어서 빠르게 회수하라고 null을 넣어줌.
+        }
         super.onDestroy();
-       // thread = null;//쓰레기 값을 만들어서 빠르게 회수하라고 null을 넣어줌.
     }
 
     private final LocationListener mLocationListener = new LocationListener() {
@@ -101,7 +103,6 @@ public class MyService extends Service {
             latitude = location.getLatitude();   //위도
             Log.e("gpsFlag","좌표가 바뀌었음"+longitude);
 
-            /*
             Geocoder mGeoCoder = new Geocoder(getApplicationContext(), Locale.KOREA);
             String sb = new String();
             try {
@@ -119,14 +120,16 @@ public class MyService extends Service {
             } catch (IOException e) {
             }
             if(!sb.equals(currnetLoc)){
-            */
                     if(thread != null) thread.stopForever();
-               // currnetLoc = sb;
+                    currnetLoc = sb;
                     thread = new ServiceThread(handler, longitude, latitude);
-                    Log.e("finalFlag", "final");
+                    Log.e("flag", "도시가 바뀌었습니다.");
                     thread.start();
+                }
+                else{
+                Log.e("flag", "위치는 바뀌었으나 도시는 그대로네요");
 
-              //  }
+            }
 
             //여기서 위치값이 갱신되면 이벤트가 발생한다.
             //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
@@ -220,7 +223,39 @@ public class MyService extends Service {
                     Notifi.flags = Notification.FLAG_AUTO_CANCEL;
                     Notifi_M.notify(777, Notifi);
                     break;
-                default:
+                case 4:
+                    Notifi = new Notification.Builder(getApplicationContext())
+                            .setContentTitle("Rain and Cold")
+                            .setContentText("지금 비오고 추워요. 조심하세요! ")
+                            .setSmallIcon(R.drawable.ic_launcher_background)
+                            .setTicker("알림!!!")
+                            .setChannelId("channel_id")
+                            .setContentIntent(pendingIntent)
+                            .build();
+                    Notifi.defaults = Notification.DEFAULT_SOUND;
+                    //알림 소리를 한번만 내도록
+                    Notifi.flags = Notification.FLAG_ONLY_ALERT_ONCE;
+                    //확인하면 자동으로 알림이 제거 되도록
+                    Notifi.flags = Notification.FLAG_AUTO_CANCEL;
+                    Notifi_M.notify(777, Notifi);
+                    break;
+                case 5:
+                    Notifi = new Notification.Builder(getApplicationContext())
+                            .setContentTitle("Snow")
+                            .setContentText("지금 눈와요. 눈길 조심하세요!")
+                            .setSmallIcon(R.drawable.ic_launcher_background)
+                            .setTicker("알림!!!")
+                            .setChannelId("channel_id")
+                            .setContentIntent(pendingIntent)
+                            .build();
+                    Notifi.defaults = Notification.DEFAULT_SOUND;
+                    //알림 소리를 한번만 내도록
+                    Notifi.flags = Notification.FLAG_ONLY_ALERT_ONCE;
+                    //확인하면 자동으로 알림이 제거 되도록
+                    Notifi.flags = Notification.FLAG_AUTO_CANCEL;
+                    Notifi_M.notify(777, Notifi);
+                    break;
+                    default:
                     break;
             }
 
