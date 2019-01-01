@@ -16,10 +16,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".PersonInfo">
-    <ImageView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weather"
+            android:src="@drawable/load"/>
         <TextView
             android:textSize="40dp"
             android:id="@+id/temp"
@@ -34,6 +36,8 @@
     android:text="On"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+
     android:background="@drawable/rounded_button"
     android:textColor="#16193B"
     android:id = "@+id/btn_start"/>
@@ -41,6 +45,8 @@
             android:text="Off"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+
             android:background="@drawable/rounded_button"
             android:textColor="#16193B"
             android:id = "@+id/btn_end"/>
