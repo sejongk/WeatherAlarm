@@ -17,10 +17,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-
-        </activity>
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".FullImage"
             android:label="@string/title_activity_full_image"
@@ -35,15 +33,18 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".PlusPerson" ></activity>
+        <activity android:name=".PlusPerson" />
         <activity
             android:name=".getPermission"
             android:label="@string/title_activity_get_permission"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
