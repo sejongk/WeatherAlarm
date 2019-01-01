@@ -50,7 +50,6 @@ public class WeatherAlarm extends Fragment {
         public void onLocationChanged(Location location) {
             longitude = location.getLongitude(); //경도
             latitude = location.getLatitude();   //위도
-            Log.e("gpsFlag","좌표가 바뀌었음");
             getInfo();
         }
         public void onProviderDisabled(String provider) {
@@ -129,10 +128,15 @@ public void getInfo(){
         btn_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Service 끝",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(),MyService.class);
-                if(conn != null)  getActivity().unbindService(conn);
-                //  getActivity().stopService(intent);
+                try {
+
+                    Toast.makeText(getActivity(), "Service 끝", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), MyService.class);
+                    getActivity().unbindService(conn);
+                    getActivity().stopService(intent);
+                }catch (IllegalArgumentException e){
+
+                }
             }
         });
 
@@ -150,7 +154,7 @@ public void getInfo(){
         @Override
         protected String doInBackground(Void... params) {
             try {
-                String url1= "https://api.openweathermap.org/data/2.5/weather?&APPID=4b68d3c0176ef8dc98a91decba2ef3ed&lang=kr&units=metic&";
+                String url1= "https://api.openweathermap.org/data/2.5/weather?&APPID=4b68d3c0176ef8dc98a91decba2ef3ed&lang=en&units=metic&";
                 String url2="lat="+latitude+"&lon="+longitude;
                 String $url_json =url1+url2;
                 URL url = new URL($url_json);
@@ -167,7 +171,7 @@ public void getInfo(){
                     buffer.append(line);
                 }
                 resultJson = buffer.toString();
-                Log.d("FOR_LOG", resultJson);
+               // Log.d("FOR_LOG", resultJson);
 
             } catch (Exception e) {
                 e.printStackTrace();

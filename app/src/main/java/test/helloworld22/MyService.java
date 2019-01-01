@@ -21,7 +21,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -65,8 +64,17 @@ public class MyService extends Service {
     public void onCreate(){
         handler= new myServiceHandler();
         Notifi_M = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        thread = new ServiceThread(handler, longitude, latitude);
-        thread.start();
+        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
+                100, // 통지사이의 최소 시간간격 (miliSecond)
+                1, // 통지사이의 최소 변경거리 (m)
+                mLocationListener);
+        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자
+                100, // 통지사이의 최소 시간간격 (miliSecond)
+                1, // 통지사이의 최소 변경거리 (m)
+                mLocationListener);
+      //  thread = new ServiceThread(handler, longitude, latitude);
+        // thread.start();
 
     }
     @Override
@@ -79,8 +87,8 @@ public class MyService extends Service {
     //서비스가 종료될 때 할 작업
     @Override
     public void onDestroy() {
+        if(thread != null)  thread.stopForever();
         super.onDestroy();
-        thread.stopForever();
        // thread = null;//쓰레기 값을 만들어서 빠르게 회수하라고 null을 넣어줌.
     }
 
@@ -88,8 +96,12 @@ public class MyService extends Service {
         public void onLocationChanged(Location location) {
           //  pre_lati = latitude;
          //   pre_longi =longitude;
+
             longitude = location.getLongitude(); //경도
             latitude = location.getLatitude();   //위도
+            Log.e("gpsFlag","좌표가 바뀌었음"+longitude);
+
+            /*
             Geocoder mGeoCoder = new Geocoder(getApplicationContext(), Locale.KOREA);
             String sb = new String();
             try {
@@ -107,11 +119,15 @@ public class MyService extends Service {
             } catch (IOException e) {
             }
             if(!sb.equals(currnetLoc)){
-                onDestroy();
-                currnetLoc = sb;
-                thread = new ServiceThread(handler, longitude, latitude);
-                thread.start();
-            }
+            */
+                    if(thread != null) thread.stopForever();
+               // currnetLoc = sb;
+                    thread = new ServiceThread(handler, longitude, latitude);
+                    Log.e("finalFlag", "final");
+                    thread.start();
+
+              //  }
+
             //여기서 위치값이 갱신되면 이벤트가 발생한다.
             //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
             Log.d("test", "onLocationChanged, location:" + location);
@@ -143,15 +159,7 @@ public class MyService extends Service {
             Intent intent = new Intent(getBaseContext(), MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(), 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
             int state = msg.getData().getInt("state");
-            final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
-                    100, // 통지사이의 최소 시간간격 (miliSecond)
-                    1, // 통지사이의 최소 변경거리 (m)
-                    mLocationListener);
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자
-                    100, // 통지사이의 최소 시간간격 (miliSecond)
-                    1, // 통지사이의 최소 변경거리 (m)
-                    mLocationListener);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 NotificationChannel notificationChannel = new NotificationChannel("channel_id", "channel_name", NotificationManager.IMPORTANCE_DEFAULT);
