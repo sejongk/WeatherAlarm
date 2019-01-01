@@ -108,7 +108,7 @@ public class MainFragment extends Fragment {
                     String name = list.get(itemposition).user_Name;
                     String phone = list.get(itemposition).user_phNumber;
                     String email = list.get(itemposition).user_Email;
-                    Intent intent = new Intent(getActivity(),PersonInfo2.class);
+                    Intent intent = new Intent(getActivity(),PersonInfo.class);
                     intent.putExtra("id",id);
                     intent.putExtra("name",name);
                     intent.putExtra("phone",phone);

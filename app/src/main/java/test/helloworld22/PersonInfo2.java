@@ -28,13 +28,13 @@ public class PersonInfo2 extends AppCompatActivity {
         email = intent.getStringExtra("email");
         phone = intent.getStringExtra("phone");
         TextView nameT1 = (TextView) this.findViewById(R.id.getName1);
-        TextView nameT2 = (TextView) this.findViewById(R.id.getName2);
-        TextView emailT = (TextView) this.findViewById(R.id.getEmail);
+        //TextView nameT2 = (TextView) this.findViewById(R.id.getName2);
+        //TextView emailT = (TextView) this.findViewById(R.id.getEmail);
         TextView phoneT = (TextView) this.findViewById(R.id.getPhone);
 
         nameT1.setText(name);
-        nameT2.setText(name);
-        emailT.setText(email);
+        //nameT2.setText(name);
+        //emailT.setText(email);
         phoneT.setText(phone);
 
 

@@ -25,22 +25,21 @@ public class PersonInfo extends AppCompatActivity {
         id = intent.getIntExtra("id",0);
         Log.e("id",Long.toString(id));
         name = intent.getStringExtra("name");
-        email = intent.getStringExtra("email");
+        //email = intent.getStringExtra("email");
         phone = intent.getStringExtra("phone");
         TextView nameT1 = (TextView) this.findViewById(R.id.getName1);
-        TextView nameT2 = (TextView) this.findViewById(R.id.getName2);
-        TextView emailT = (TextView) this.findViewById(R.id.getEmail);
+       // TextView nameT2 = (TextView) this.findViewById(R.id.getName2);
+        //TextView emailT = (TextView) this.findViewById(R.id.getEmail);
         TextView phoneT = (TextView) this.findViewById(R.id.getPhone);
 
         nameT1.setText(name);
-        nameT2.setText(name);
-       emailT.setText(email);
+       // nameT2.setText(name);
+       //emailT.setText(email);
         phoneT.setText(phone);
 
 
         Button sendCall = (Button) this.findViewById(R.id.sendCall);
         Button sendMsg = (Button) this.findViewById(R.id.sendMessage);
-        Button delPerson = (Button) this.findViewById(R.id.delPerson);
 
         sendCall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,15 +58,7 @@ public class PersonInfo extends AppCompatActivity {
                 startActivity( intent );
                 }
         } );
-        delPerson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                long tem = id-1;
-                getContentResolver().delete(ContactsContract.RawContacts.CONTENT_URI, ContactsContract.RawContacts._ID+"="+id,null);
-                Intent intent = new Intent(PersonInfo.this, MainActivity.class);
-                startActivity(intent);
-            }
-        } );
+
     }
 
 //Intent intent = new Intent(Intent.ACTION_INSERT, Contacts.CONTENT_URI);
