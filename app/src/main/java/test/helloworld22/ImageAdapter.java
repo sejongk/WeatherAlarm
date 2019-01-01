@@ -3,10 +3,14 @@ package test.helloworld22;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -14,6 +18,8 @@ import android.widget.ListAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import static android.content.Context.WINDOW_SERVICE;
 
 public class ImageAdapter extends BaseAdapter implements ListAdapter {
     private Context mContext;
@@ -24,15 +30,19 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
     public Bitmap[] mThumb;
     public BitmapFactory.Options options = new BitmapFactory.Options();
     private File[] listFile;
+    public int width;
 
     public ImageAdapter(Context c) {
-
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) c.getSystemService(WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        width = dm.widthPixels;
         mContext = c;
 
         File directory= new File("/storage/emulated/0/DCIM/Camera");
         Log.d("fileDirectory : ",Environment.getDataDirectory()+"/DCIM/Camera");
         listFile = directory.listFiles();
-        options.inSampleSize = 4;
+        options.inSampleSize = 8;
 
         for (int i = 0; i < listFile.length; i++)
         {
@@ -65,7 +75,7 @@ public class ImageAdapter extends BaseAdapter implements ListAdapter {
         ImageView imageView;
         if (convertView == null) { // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(350, 350));
+            imageView.setLayoutParams(new GridView.LayoutParams(width/3, width/3));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {
