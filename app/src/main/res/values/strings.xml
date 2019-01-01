@@ -5,6 +5,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_person_info">PersonInfo</string>
     <string name="title_activity_full_image">FullImage</string>
-    <string name="title_activity_get_permission">getPermission</string>
+    <string name="title_activity_get_permission">WeatherAlarm</string>
     <string name="welcome">"        시작 >        "</string>
 </resources>
