@@ -242,7 +242,7 @@ public class MyService extends Service {
                 case 5:
                     Notifi = new Notification.Builder(getApplicationContext())
                             .setContentTitle("Snow")
-                            .setContentText("지금 눈와요. 눈길 조심하세요!")
+                            .setContentText("밖이 춥고 눈이 와요!")
                             .setSmallIcon(R.drawable.ic_launcher_background)
                             .setTicker("알림!!!")
                             .setChannelId("channel_id")
