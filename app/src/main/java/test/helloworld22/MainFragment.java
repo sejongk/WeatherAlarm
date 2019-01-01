@@ -31,7 +31,10 @@ public class MainFragment extends Fragment {
      public void onResume(){
          super.onResume();
          list = getContactList();
-         adapter.notifyDataSetChanged();
+         adapter = new MainViewAdapter(getActivity(), list);
+         recyclerView.setHasFixedSize(true);
+         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+         recyclerView.setAdapter(adapter);
      }
     @Override
     public void onStart(){
