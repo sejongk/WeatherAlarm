@@ -232,6 +232,9 @@ public void getInfo(){
                     for(int i=0;i<winds.length;i++){ if(id == winds[i]) {
                         weather.setImageResource(R.drawable.wind);
                     } }
+                    for(int i=0;i<dust.length;i++){ if(id == dust[i]) {
+                        weather.setImageResource(R.drawable.mask2);
+                    } }
                 }
 
                 //adapter.notifyDataSetChanged();
