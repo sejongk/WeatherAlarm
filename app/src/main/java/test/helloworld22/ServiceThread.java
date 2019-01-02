@@ -151,7 +151,7 @@ public class ServiceThread extends Thread {
                 if (pre_snow == false && cur_snow == true) chg_snow = true;
                 else chg_snow = false;
 
-                if (tem < 0) {
+                if (tem <= 0) {
                     cur_cold = true;
                 } else cur_cold = false;
 
