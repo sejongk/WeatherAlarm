@@ -49,6 +49,7 @@ public class WeatherAlarm extends Fragment {
 
     TextView tempText;
     ImageView weather;
+    TextView descripText;
 
 
     //gps 설치
@@ -120,7 +121,8 @@ public void getInfo(){
 
         weather=rootView.findViewById(R.id.weather);
         tempText=rootView.findViewById(R.id.temp);
-
+        descripText=rootView.findViewById(R.id.description);
+/*
         Button btn_start = (Button)rootView.findViewById(R.id.btn_start);
         Button btn_end = (Button)rootView.findViewById(R.id.btn_end);
 
@@ -146,7 +148,7 @@ public void getInfo(){
                 }
             }
         });
-
+*/
         Log.e("Frag", "MainFragment");
         return rootView;
     }
@@ -211,6 +213,7 @@ public void getInfo(){
 
                 if(latitude != 0 && longitude != 0) {
                     tempText.setText(Double.toString(tem));
+                    descripText.setText(description);
                     for(int i=0;i<rain.length;i++){ if(id == rain[i]) {
                         rain_state = true;
                         weather.setImageResource(R.drawable.rain);

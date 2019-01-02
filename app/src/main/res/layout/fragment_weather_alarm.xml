@@ -19,7 +19,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             android:id="@+id/weather"
             android:src="@drawable/load"/>
         <TextView
@@ -28,28 +28,17 @@
             android:layout_gravity="center_horizontal"
             android:textColor="#16193B"
             android:layout_width="wrap_content"
-            android:layout_height="100dp" />
-
-
-
-<Button
-    android:text="On"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
-
-    android:background="@drawable/rounded_button"
-    android:textColor="#16193B"
-    android:id = "@+id/btn_start"/>
-        <Button
-            android:text="Off"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="50dp" />
+        <TextView
+            android:textSize="20dp"
+            android:id="@+id/description"
             android:layout_gravity="center_horizontal"
-
-            android:background="@drawable/rounded_button"
             android:textColor="#16193B"
-            android:id = "@+id/btn_end"/>
+            android:layout_width="wrap_content"
+            android:layout_height="50dp" />
+
+
+
 
 
 
